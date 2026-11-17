@@ -4,7 +4,7 @@ from a Windows computer."""
 
 APP_NAME = "SFTP Tools"
 APP_ID = "sftp-tools"
-__version__ = "2.2.0"
+__version__ = "2.2.1"
 
 from pathlib import Path
 
