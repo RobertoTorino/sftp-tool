@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -28,7 +29,8 @@ def test_profile_store_persists_connection_details_without_credentials(
     assert "password" not in stored_text.lower()
     assert "passphrase" not in stored_text.lower()
     assert "secret" not in stored_text.lower()
-    assert path.stat().st_mode & 0o777 == 0o600
+    if os.name != "nt":
+        assert path.stat().st_mode & 0o777 == 0o600
 
 
 def test_saving_a_profile_replaces_the_existing_profile(tmp_path: Path) -> None:

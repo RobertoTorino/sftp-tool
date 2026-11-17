@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import os
+
 from sftp_tools import app_logging
 
 
@@ -13,10 +15,8 @@ def test_logs_to_file(tmp_path):
 
 
 def test_the_log_writes_the_users_folders_as_home(tmp_path, monkeypatch):
-    """No user name in the log (owner, 03-11-2026: the privacy rule): the home folder as ~ in every line."""
-    import logging
-    from sftp_tools import app_logging
-    monkeypatch.setenv("HOME", str(tmp_path))
+    """The home folder is anonymized in the log."""
+    monkeypatch.setenv("USERPROFILE" if os.name == "nt" else "HOME", str(tmp_path))
     logger = app_logging.get_logger()
     for handler in list(logger.handlers):
         logger.removeHandler(handler)
@@ -27,4 +27,6 @@ def test_the_log_writes_the_users_folders_as_home(tmp_path, monkeypatch):
         logger.removeHandler(handler)
         handler.close()
     text = (tmp_path / "log" / "app.log").read_text()
-    assert "Cannot read local folder ~/Pictures: permission denied" in text and str(tmp_path) not in text
+    home = "%USERPROFILE%" if os.name == "nt" else "~"
+    assert f"Cannot read local folder {home}{os.sep}Pictures: permission denied" in text
+    assert str(tmp_path) not in text

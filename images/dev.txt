@@ -1,0 +1,12 @@
+The tag push triggers the Release workflow; its version must match VERSION. 
+The push to main triggers CI.
+For example, to release 2.2.1, update CHANGELOG first, then run the following:
+
+
+printf '2.2.1\n' > VERSION
+sed -i 's/^__version__ = .*/__version__ = "2.2.1"/' sftp_tools/__init__.py
+git add VERSION sftp_tools/__init__.py CHANGELOG
+git commit -m "see changelog"
+git push origin main
+git tag v2.2.1
+git push origin v2.2.1

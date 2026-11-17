@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import time
+from pathlib import Path
 from unittest.mock import Mock, call, patch
 
 import paramiko
@@ -248,7 +249,7 @@ def test_local_rows_drag_as_file_urls(qapp, tmp_path) -> None:
 
     urls = tab.local_table.mimeData(items).urls()
 
-    assert [url.toLocalFile() for url in urls] == [str(tmp_path / "b.txt")]
+    assert [Path(url.toLocalFile()) for url in urls] == [tmp_path / "b.txt"]
 
 
 def test_files_dropped_on_the_remote_list_are_copied_while_connected(qapp, tmp_path) -> None:

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import os
 from unittest.mock import Mock, patch
 
 import paramiko
@@ -75,7 +76,7 @@ def test_unknown_host_policy_reports_identity_and_key(
 def test_save_trusted_host_key_adds_key_to_user_known_hosts(
     tmp_path, monkeypatch
 ) -> None:
-    monkeypatch.setenv("HOME", str(tmp_path))
+    monkeypatch.setenv("USERPROFILE" if os.name == "nt" else "HOME", str(tmp_path))
     key = paramiko.RSAKey.generate(1024)
     error = UnknownHostKeyError("example.test", 2200, key)
 
@@ -83,7 +84,9 @@ def test_save_trusted_host_key_adds_key_to_user_known_hosts(
 
     host_keys = paramiko.HostKeys(str(known_hosts))
     assert host_keys.lookup("[example.test]:2200")["ssh-rsa"] == key
-    assert known_hosts.stat().st_mode & 0o777 == 0o600
+    assert known_hosts == tmp_path / ".ssh" / "known_hosts"
+    if os.name != "nt":
+        assert known_hosts.stat().st_mode & 0o777 == 0o600
 
 
 @pytest.mark.parametrize(
