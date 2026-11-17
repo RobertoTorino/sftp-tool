@@ -1,0 +1,8 @@
+Changelog: 15-11-2026 08:59:47
+
+Breaking. SFTP Tools for Windows has its own repository: it was the Windows executable of BC-250 SFTP Tools,
+built in the BC250 Bazzite Suite. It is called SFTP Tools now: SFTP-Tools.exe in sftp-tools-<version>-windows.zip,
+released here with tags v<x.y.z>. Its settings, profiles and log move once, at the first start, from the
+bc250-sftp-tools folders to sftp-tools. The code is the suite's SFTP Tools 2.2.0 with the part of the suite's shared
+code it uses (sftp_tools/core), so it needs nothing from the suite.
+

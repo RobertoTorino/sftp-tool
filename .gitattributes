@@ -1,0 +1,8 @@
+# Every text file is LF in the repository and in the working tree, on Windows too.
+* text=auto eol=lf
+
+*.ttf               binary
+*.png               binary
+*.webp              binary
+*.ico               binary
+*.zip               binary
