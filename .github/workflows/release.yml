@@ -43,6 +43,6 @@ jobs:
       - name: Publish
         run: |
           version=${TAG#v}
-          awk 'NR > 2 && /^Changelog: / { exit } NR > 2 { print }' CHANGELOG > notes.md
+          awk 'NR > 1 && /^Changelog: / { exit } NR > 1 { print }' CHANGELOG > notes.md
           gh release create "$TAG" windist/*.zip windist/*.zip.sha256 --title "SFTP Tools $version" \
             --notes-file notes.md --verify-tag
